@@ -5,7 +5,14 @@ if (!$conn) {
     die("Connection failed!");
 }
 
-$sql = "SELECT * FROM students";
+$search = "";
+if (isset($_GET['search'])) {
+    $search = mysqli_real_escape_string($conn, $_GET['search']);
+    $sql = "SELECT * FROM students WHERE first_name LIKE '%$search%' OR last_name LIKE '%$search%'";
+} else {
+    $sql = "SELECT * FROM students";
+}
+
 $result = mysqli_query($conn, $sql);
 ?>
 
@@ -16,6 +23,13 @@ $result = mysqli_query($conn, $sql);
 </head>
 <body>
     <h2>Student Records</h2>
+
+    <form method="GET" action="vstudents.php">
+        <input type="text" name="search" placeholder="Search by name..." value="<?php echo htmlspecialchars($search); ?>">
+        <button type="submit">Search</button>
+    </form>
+
+    <br>
     <table border="1" cellpadding="10">
         <tr>
             <th>ID</th>
@@ -46,5 +60,3 @@ $result = mysqli_query($conn, $sql);
     <a href="student.php">Add New Student</a>
 </body>
 </html>
-
-
