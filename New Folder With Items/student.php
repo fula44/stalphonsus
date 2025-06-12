@@ -4,41 +4,32 @@
     <title>Add Student</title>
 </head>
 <body>
-    <h2>Add New Student</h2>
-    <form method="post" action="student.php">
-        First Name: <input type="text" name="first_name" required><br><br>
-        Last Name: <input type="text" name="last_name" required><br><br>
-        Date of Birth: <input type="date" name="dob" required><br><br>
-        Gender: 
-        <select name="gender" required>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select><br><br>
-        Class: <input type="text" name="class" required><br><br>
-        <input type="submit" value="Add Student">
-    </form>
+<h2>Add New Student</h2>
+<form action="save_student.php" method="POST">
+    <label>First Name:</label>
+    <input type="text" name="first_name" required minlength="2" maxlength="30"><br>
+
+    <label>Last Name:</label>
+    <input type="text" name="last_name" required minlength="2" maxlength="30"><br>
+
+    <label>DOB:</label>
+    <input type="date" name="dob" required><br>
+
+    <label>Gender:</label>
+    <select name="gender" required>
+        <option value="">--Select--</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+    </select><br>
+
+    <label>Email:</label>
+    <input type="email" name="email" required><br>
+
+    <label>Class:</label>
+    <input type="text" name="class" required maxlength="10"><br>
+
+    <button type="submit">Add Student</button>
+</form>
 </body>
 </html>
 
-<?php
-$conn = mysqli_connect("localhost", "root", "", "st_alphonsus_db");
-
-if (!$conn) {
-    die("Connection failed");
-}
-
-$first = $_POST['first_name'];
-$last = $_POST['last_name'];
-$dob = $_POST['dob'];
-$gender = $_POST['gender'];
-$class = $_POST['class'];
-
-$sql = "INSERT INTO students (first_name, last_name, dob, gender, class)
-        VALUES ('$first', '$last', '$dob', '$gender', '$class')";
-
-mysqli_query($conn, $sql);
-
-echo "Student saved successfully";
-
-mysqli_close($conn);
-?>
