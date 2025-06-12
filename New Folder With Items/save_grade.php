@@ -1,22 +1,33 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 include 'db.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $student_id = $_POST['student_id'];
     $subject_id = $_POST['subject_id'];
     $grade = $_POST['grade'];
+    $date = date("Y-m-d");
 
-    $sql = "INSERT INTO grades (student_id, subject_id, grade) 
-            VALUES ('$student_id', '$subject_id', '$grade')";
+    $errors = [];
 
-    if (mysqli_query($conn, $sql)) {
-        echo "✅ Grade saved successfully. <a href='vgrades.php'>View Grades</a>";
-    } else {
-        echo "❌ Error: " . mysqli_error($conn);
+    if (empty($student_id)) $errors[] = "Student is required.";
+    if (empty($subject_id)) $errors[] = "Subject is required.";
+    if (empty($grade)) $errors[] = "Grade is required.";
+
+    if (!empty($errors)) {
+        foreach ($errors as $error) {
+            echo "<p style='color:red;'>$error</p>";
+        }
+        exit;
     }
-} else {
-    echo "Invalid request.";
+
+    $query = "INSERT INTO grades (student_id, subject_id, grade, date_recorded) 
+              VALUES ('$student_id', '$subject_id', '$grade', '$date')";
+
+    if (mysqli_query($conn, $query)) {
+        echo "Grade assigned successfully.";
+        echo "<br><a href='add_grade.php'>Assign Another</a>";
+    } else {
+        echo "Error: " . mysqli_error($conn);
+    }
 }
 ?>
