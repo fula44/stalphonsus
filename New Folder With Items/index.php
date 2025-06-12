@@ -43,7 +43,7 @@
         <a href="teacher.php" class="btn">Manage Teachers</a>
         <a href="subject.php" class="btn">Manage Subjects</a>
         <a href="add_attendance.php" class="btn">Record Attendance</a>
-        <a href="grades.php" class="btn">Assign Grades</a>
+        <a href="add_grades.php" class="btn">Assign Grades</a>
         <a href="vattendance.php" class="btn">View Attendance Records</a>
         <a href="vgrades.php" class="btn">View Grades</a>
     </div>
