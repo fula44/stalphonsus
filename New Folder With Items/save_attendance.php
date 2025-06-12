@@ -1,28 +1,45 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 include 'db.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $student_id = $_POST['student_id'];
-    $date = $_POST['attendance_date'];
+    $subject_id = $_POST['subject_id'];
+    $date = $_POST['date'];
     $status = $_POST['status'];
 
+    $errors = [];
+
     if (empty($student_id)) {
-        die("❌ Please select a student.");
+        $errors[] = "Student is required.";
+    }
+    if (empty($subject_id)) {
+        $errors[] = "Subject is required.";
+    }
+    if (empty($date)) {
+        $errors[] = "Date is required.";
+    }
+    if (empty($status)) {
+        $errors[] = "Attendance status is required.";
     }
 
-    $sql = "INSERT INTO attendance (student_id, date, status) 
-            VALUES ('$student_id', '$date', '$status')";
+    if (!empty($errors)) {
+        foreach ($errors as $error) {
+            echo "<p style='color:red;'>$error</p>";
+        }
+        exit;
+    }
 
-    if (mysqli_query($conn, $sql)) {
-        echo "✅ Attendance recorded successfully. <a href='vattendance.php'>View Attendance</a>";
+    $query = "INSERT INTO attendance (student_id, subject_id, date, status) 
+              VALUES ('$student_id', '$subject_id', '$date', '$status')";
+
+    if (mysqli_query($conn, $query)) {
+        echo "Attendance recorded successfully.";
+        echo "<br><a href='add_attendance.php'>Record Another</a>";
     } else {
-        echo "❌ Error: " . mysqli_error($conn);
+        echo "Error: " . mysqli_error($conn);
     }
-} else {
-    echo "Invalid request.";
 }
 ?>
+
 
 
